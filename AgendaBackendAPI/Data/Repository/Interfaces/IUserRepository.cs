@@ -12,5 +12,7 @@ namespace AgendaBackendAPI.Data.Repository.Interfaces
         public void Create(CreateAndUpdateUserDTO userDTO);
         public User Update(CreateAndUpdateUserDTO userDTO);
         public void Delete(int Id);
+        public void Archive(int Id);
+
     }
 }

@@ -14,7 +14,10 @@ namespace AgendaBackendAPI.Entities
         public string email { get; set; }
         public string password { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+        public State state { get; set; } = State.Active;
+
         public Rol Rol { get; set; } = Rol.User;
+
     }
 
 }

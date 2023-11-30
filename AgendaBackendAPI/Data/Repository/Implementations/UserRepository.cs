@@ -1,21 +1,25 @@
-﻿using AgendaBackendAPI.Data.Repository.Interfaces;
+﻿
+using AgendaBackendAPI.Data;
+using AgendaBackendAPI.Data.Repository.Interfaces;
 using AgendaBackendAPI.Entities;
 using AgendaBackendAPI.Models.Dtos;
 using AgendaBackendAPI.Models.Enum;
 using AutoMapper;
 
-namespace AgendaBackendAPI.Data.Repository.Implementations
+namespace AgendaBack2023.Data.Repository.Implementations
 {
     public class UserRepository : IUserRepository
     {
-        private AgendaApiContext _context;
         private readonly IMapper _mapper;
+        private AgendaApiContext _context;
 
         public UserRepository(AgendaApiContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+
+
         public List<User> GetAll()
         {
             return _context.Users.ToList();
@@ -55,6 +59,17 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
             return user;
         }
 
+        public void Archive(int Id)
+        {
+            User user = _context.Users.FirstOrDefault(u => u.id == Id);
+            if (user != null)
+            {
+                user.state = State.Archived;
+                _context.Update(user);
+                _context.SaveChanges();
+            }
 
+        }
     }
 }
+

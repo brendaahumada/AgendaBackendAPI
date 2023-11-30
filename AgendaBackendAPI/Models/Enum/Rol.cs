@@ -4,6 +4,6 @@
     {
         Admin,
         User,
-        Guest
+        SuperAdmins
     }
 }

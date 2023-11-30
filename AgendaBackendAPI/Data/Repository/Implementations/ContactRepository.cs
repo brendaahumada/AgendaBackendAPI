@@ -19,14 +19,14 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
 
         public Contact GetContactById(int id)
         {
-            return _context.Contactos
+            return _context.Contacts
             .Include(c => c.location)
             .Single(c => c.id == id);
 
         }
         public List<Contact> GetAllByUser(int id)
         {
-            return _context.Contactos.Where(c => c.UserId == id)
+            return _context.Contacts.Where(c => c.UserId == id)
             .Include(c => c.location)
             .ToList();
         }
@@ -35,7 +35,7 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
         {
             Contact contact = _mapper.Map<Contact>(dto);
             contact.UserId = id;
-            _context.Contactos.Add(contact);
+            _context.Contacts.Add(contact);
             _context.SaveChanges();
 
             return contact;
@@ -46,7 +46,7 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
         {
             //contact = _context.Contacts.Single(c => c.id == dto.id);
             Contact contact = _mapper.Map<Contact>(dto);
-            _context.Contactos.Update(contact);
+            _context.Contacts.Update(contact);
 
             _context.SaveChanges();
 
@@ -55,7 +55,7 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
 
         public void Delete(int id)
         {
-            _context.Contactos.Remove(_context.Contactos.Single(c => c.id == id));
+            _context.Contacts.Remove(_context.Contacts.Single(c => c.id == id));
             _context.SaveChanges();
         }
     }

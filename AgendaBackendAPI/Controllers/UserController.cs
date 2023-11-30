@@ -24,9 +24,12 @@ namespace AgendaBackendAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            //return Ok(_userRepository.GetAll);
             try
             {
-                var usersDTO = _mapper.Map<IEnumerable<UserDto>>(User);
+                //int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+                var users = _userRepository.GetAll();
+                var usersDTO = _mapper.Map<IEnumerable<UserDto>>(users);
                 return Ok(usersDTO);
             }
             catch (Exception ex)
@@ -34,7 +37,6 @@ namespace AgendaBackendAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpGet]
         [Route("{id}")]
@@ -82,30 +84,51 @@ namespace AgendaBackendAPI.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                if (_userRepository.GetById(id).Rol == 0)
+                {
+                    _userRepository.Delete(id);
+                }
+                else
+                {
+                    _userRepository.Archive(id);
+                }
+                return StatusCode(204);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
 
-       // [HttpDelete]
-       // [Route("{Id}")]
-//        public IActionResult DeleteUsersById(int Id)
+//[HttpDelete]
+//[Route("{Id}")]
+//public IActionResult DeleteUsersById(int Id)
+//{
+//    try
+//    {
+//        var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+//        if (role.Value == "Admin")
 //        {
-//            try
-//            {
-//                var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
-//                if (role.Value == "Admin")
-//                {
-//                    _userRepository.DeleteUsers(Id);
-//                }
-//                else
-//                {
-//                    _userRepository.ArchiveUsers(Id);
-//                }
-//                return NoContent();
-//            }
-//            catch (Exception ex)
-//            {
-//                return BadRequest(ex.Message);
-//            }
+//            _userRepository.DeleteUsers(Id);
 //        }
+//        else
+//        {
+//            _userRepository.ArchiveUsers(Id);
+//        }
+//        return NoContent();
+//    }
+//    catch (Exception ex)
+//    {
+//        return BadRequest(ex.Message);
+//    }
+//}
 //}
 

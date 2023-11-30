@@ -8,6 +8,7 @@ using System.Text;
 using AgendaBackendAPI.Data.Repository.Implementations;
 using AgendaBackendAPI.Data.Repository.Interfaces;
 using AgendaBackendAPI.Data;
+using AgendaBack2023.Data.Repository.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +55,7 @@ builder.Services.AddCors(options =>
 //add context
 builder.Services.AddDbContext<AgendaApiContext>(options =>
 {
-    options.UseMySql(builder.Configuration.GetConnectionString("Conexion"), new MySqlServerVersion(new Version(8, 0, 23)));
+    options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection"));
 });
 
 

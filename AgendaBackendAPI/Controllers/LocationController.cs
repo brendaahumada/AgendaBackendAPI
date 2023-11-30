@@ -27,7 +27,7 @@ namespace AgendaBack2023.Controllers
         {
             try
             {
-                var locations = await _context.Locations.ToListAsync();
+                var locations = await _context.Location.ToListAsync();
 
                 var LocationsDTO = _mapper.Map<IEnumerable<LocationDto>>(locations);
 

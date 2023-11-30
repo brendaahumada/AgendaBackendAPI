@@ -18,28 +18,29 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
         }
         public List<Location> GetAll()
         {
-            return _context.Locations.ToList();
+            return _context.Location.ToList();
         }
 
 
         public Location GetById(int locationId)
         {
-            return _context.Locations.SingleOrDefault(u => u.id == locationId);
+            return _context.Location.SingleOrDefault(u => u.id == locationId);
         }
        public void Create(CreateAndUpdateLocationDTO dto)
         {
-            _context.Locations.Add(_mapper.Map<Location>(dto));
+            _context.Location.Add(_mapper.Map<Location>(dto));
         }
 
         public void Delete(int id)
         {
-            _context.Locations.Remove(_context.Locations.Single(c => c.id == id));
+            _context.Location.Remove(_context.Location
+                .Single(c => c.id == id));
         }
 
 
         public void Update(CreateAndUpdateLocationDTO dto)
         {
-            _context.Locations.Update(_mapper.Map<Location>(dto));
+            _context.Location.Update(_mapper.Map<Location>(dto));
         }
     }
 }
