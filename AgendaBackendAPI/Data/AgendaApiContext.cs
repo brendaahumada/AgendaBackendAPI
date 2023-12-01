@@ -44,13 +44,6 @@ namespace AgendaBackendAPI.Data
                     state = State.Active
                 });
 
-            modelBuilder.Entity<Contact>().HasData(
-                new Contact
-                {
-                    id = 1,
-                    UserId = 1,
-                    name = "brenda",
-                });
 
             base.OnModelCreating(modelBuilder);
         }
