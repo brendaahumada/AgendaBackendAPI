@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendaBackendAPI.Migrations
 {
     [DbContext(typeof(AgendaApiContext))]
-    [Migration("20231201194331_V.1")]
-    partial class V1
+    [Migration("20231206195121_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

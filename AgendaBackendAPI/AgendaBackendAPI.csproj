@@ -15,7 +15,6 @@
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-		<!-- Eliminé duplicados y corregí el cierre de la etiqueta para Microsoft.EntityFrameworkCore.Tools -->
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
