@@ -3,6 +3,7 @@ using AgendaBackendAPI.Data.Repository.Interfaces;
 using AgendaBackendAPI.Entities;
 using AgendaBackendAPI.Models.Dtos;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaBackendAPI.Data.Repository.Implementations
 {
@@ -36,8 +37,6 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
             _context.Location.Remove(_context.Location
                 .Single(c => c.id == id));
         }
-
-
         public void Update(CreateAndUpdateLocationDTO dto)
         {
             _context.Location.Update(_mapper.Map<Location>(dto));

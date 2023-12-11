@@ -9,7 +9,7 @@ namespace AgendaBackendAPI.Entities
     {
             [Key]
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-            public int? id { get; set; }
+            public int id { get; set; }
             public string name { get; set; }
             public string lastName { get; set; }
             public string description { get; set; }

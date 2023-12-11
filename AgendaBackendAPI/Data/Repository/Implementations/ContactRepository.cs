@@ -2,6 +2,7 @@
 using AgendaBackendAPI.Entities;
 using AgendaBackendAPI.Models.Dtos;
 using AutoMapper;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaBackendAPI.Data.Repository.Implementations
@@ -20,38 +21,81 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
         public Contact GetContactById(int id)
         {
             return _context.Contacts
-            .Include(c => c.location)
-            .Single(c => c.id == id);
-
+                .Include(c => c.location)
+                .Single(c => c.id == id);
         }
+
         public List<Contact> GetAllByUser(int id)
         {
-            return _context.Contacts.Where(c => c.UserId == id)
-            .Include(c => c.location)
-            .ToList();
+            return _context.Contacts
+                .Where(c => c.UserId == id)
+                .Include(c => c.location)
+                .ToList();
         }
 
-        public Contact Create(CreateAndUpdateContactDTO dto, int id)
+        public Contact Create(CreateAndUpdateContactDTO dto, int UserId)
         {
+            // Mapea el DTO a la entidad Contact
             Contact contact = _mapper.Map<Contact>(dto);
-            contact.UserId = id;
+
+            // Asigna el UserId
+            contact.UserId = UserId;
+
+            // Agrega el contacto al contexto y guarda los cambios en la base de datos
             _context.Contacts.Add(contact);
             _context.SaveChanges();
 
-            return contact;
-
+            // Devuelve el contacto mapeado a DTO
+            Contact contactDto = _mapper.Map<Contact>(contact);
+            return contactDto;
         }
 
-        public Contact Update(CreateAndUpdateContactDTO dto)
+
+
+        public void Update(CreateAndUpdateContactDTO dto)
         {
-            //contact = _context.Contacts.Single(c => c.id == dto.id);
-            Contact contact = _mapper.Map<Contact>(dto);
-            _context.Contacts.Update(contact);
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var contactItem = _context.Contacts.Include(c => c.location).FirstOrDefault(x => x.id == dto.id);
 
-            _context.SaveChanges();
+                    if (contactItem != null)
+                    {
+                        // Verificar si el DTO tiene un ID válido
+                        if (dto.id > 0)
+                        {
+                            // Modificar las propiedades de la entidad según el DTO
+                            contactItem.name = dto.name;
+                            contactItem.lastName = dto.lastName;
+                            contactItem.description = dto.description;
+                            contactItem.email = dto.email;
+                            contactItem.celularNumber = dto.celularNumber;
+                            contactItem.telephoneNumber = dto.telephoneNumber;
+                            contactItem.UserId = dto.Userid;
 
-            return contact;
+                            // Actualizar propiedades de ubicación si están presentes en el DTO
+                            if (dto.location != null)
+                            {
+                                // Mapear el objeto LocationDto a Location
+                                contactItem.location = _mapper.Map<Location>(dto.location);
+                            }
+
+                            _context.ChangeTracker.DetectChanges();
+                            _context.Entry(contactItem).State = EntityState.Modified;
+                            _context.SaveChanges();
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    // Manejar la excepción, por ejemplo, registrándola o lanzándola nuevamente
+                }
+            }
         }
+
 
         public void Delete(int id)
         {
@@ -59,4 +103,5 @@ namespace AgendaBackendAPI.Data.Repository.Implementations
             _context.SaveChanges();
         }
     }
+
 }

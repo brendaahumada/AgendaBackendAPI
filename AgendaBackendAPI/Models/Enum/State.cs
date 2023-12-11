@@ -5,5 +5,6 @@
             Active,
             Archived,
             Confirmed,
+            Modifed
         }
 }

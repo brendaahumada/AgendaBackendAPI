@@ -1,5 +1,6 @@
 ﻿
 using AgendaBackendAPI.Data;
+using AgendaBackendAPI.Data.Repository.Interfaces;
 using AgendaBackendAPI.Entities;
 using AgendaBackendAPI.Models.Dtos;
 using AutoMapper;
@@ -12,6 +13,8 @@ namespace AgendaBack2023.Controllers
     [ApiController]
     public class LocationController : ControllerBase
     {
+        private readonly ILocationRepository _locationRepository;
+        private readonly IContactRepository _contactRepository;
         private readonly AgendaApiContext _context;
         private readonly IMapper _mapper;
 
@@ -38,6 +41,27 @@ namespace AgendaBack2023.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            try
+            {
+                var location = _context.Location.SingleOrDefault(u => u.id == id);
+
+                if (location == null)
+                {
+                    return NotFound(); // Devuelve un 404 Not Found si no se encuentra la ubicación con el ID proporcionado.
+                }
+
+                return Ok(location); // Devuelve un 200 OK con la ubicación si se encuentra.
+            }
+            catch (Exception ex)
+            {
+                // Loguea el error o maneja de otra manera según tus necesidades.
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+
 
         [HttpPost]
 

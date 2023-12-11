@@ -9,6 +9,6 @@
         public long celularNumber { get; set; }
         public long? telephoneNumber { get; set; }
 
-        public LocationDto? location { get; set; }
+        public LocationDto location { get; set; }
     }
 }
